@@ -1,39 +1,61 @@
-import {Clock, History}  from 'lucide-react'
+import { Clock, History}  from 'lucide-react'
+import { useTodoContext } from "../hooks/useTodoContext"
+import type { TodoFilter, TodoSort } from '../types/todo'
 
 export default function TodoFilters() {
-    const filters = [{ label: 'すべて' },{ label: '未完了'},{ label: '完了'}];
-    const sorts = [
-       { label: '作成日時', icon: <Clock className='w-4 h-4'/> },
-       { label: '更新日時', icon: <History className='w-4 h-4' /> },
+    const { filter, setFilter, sort, setSort } = useTodoContext();
+
+    const filters: { value: TodoFilter; label: string }[] = [
+        { value: "all" ,  label: 'すべて' },
+        { value: "active" , label: '未完了'},
+        { value: "completed" , label: '完了'},
     ];
 
-    return (
-      <div className='flex flex-wrap items-center justify-between gap-4'> 
-        <div className='flex gap-2'>
-          {filters.map(({ label }) => (
-            // TODO 有効なボタンだけオレンジにする
-            <button 
-              key={label} 
-              className='px-3 py-1 text-sm text-white bg-orange-500 rounded-full'
-            >
-              {label}
-            </button>
-         ))}
-        </div>
+    const sorts: { value: TodoSort; label: string; icon: React.ReactNode } [] = [
+       {
+           label: '作成日時', icon: <Clock className='w-4 h-4' />,
+           value: 'createdAt'
+       },
+       {
+           label: '更新日時', icon: <History className='w-4 h-4' />,
+           value: 'createdAt'
+       },
+    ];
 
-        <div className='flex gap-2'>
-          {sorts.map(({ label, icon }) => (
-               // TODO 有効なボタンだけオレンジにする
-            <button 
-              key={label} className='px-3 py-1 text-sm flex items-center gap-1 text-white
-                bg-orange-500 rounded-full'>
-              {icon} 
-              {label}    
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex gap-2">
+        {filters.map(({ value, label }) => (
+          <button
+            key={value}
+            className={`px-3 py-1 text-sm rounded-full ${
+              filter === value
+                ? 'text-white bg-orange-500'
+                : 'text-gray-600 hover:bg-gray-200'
+            }`}
+            onClick={() => setFilter(value)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+        <div className="flex gap-2">
+          {sorts.map(({ value, label, icon }) => (
+            <button
+              key={value} 
+              className={`flex items-center gap-1 px-3 py-1 text-sm rounded-full ${
+                 sort === value
+                   ? 'text-white bg-orange-500' 
+                   : 'text-gray-600 hover:bg-gray-200'
+              }`}
+              onClick={() => setSort(value)}
+            >
+              {icon}
+              {label}
             </button>
           ))}
         </div>
       </div>
-    )
-}
-
-
+    );
+  } 

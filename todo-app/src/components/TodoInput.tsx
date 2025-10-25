@@ -1,12 +1,17 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import { PlusCircle } from 'lucide-react';
+import { useTodoContext } from '../hooks/useTodoContext';
 
 export default function TodoInput() {
-  const [text, setText] = useState('')
+  const [text, setText] = useState('');
+  const { addTodo } = useTodoContext();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    alert(`Todo: ${text} を追加しました`);
+    e.preventDefault();
+    const trimmedText = text.trim();
+    if (!trimmedText) return
+    addTodo(trimmedText);
+    setText('');
   }
 
   return (

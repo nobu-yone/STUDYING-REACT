@@ -1,31 +1,8 @@
 import TodoItem from './TodoItem';
-import type { Todo } from '../types/todo';
+import { useTodoContext } from "../hooks/useTodoContext"
 
 export default function TodoList() {
-   // 疑似的なデータ
-   const todos: Todo[] = [
-      {
-        id: '1',
-        text: 'タスク１',
-        completed: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {      
-        id: '2',
-        text: 'タスク２',
-        completed: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: '3',
-        text: 'タスク３',
-        completed: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ];
+  const { todos } = useTodoContext()
 
     return (
       <ul className='space-y-2' role='list' aria-label='Todo リスト'>
