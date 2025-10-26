@@ -2,9 +2,9 @@ import { useTodo } from '../hooks/useTodo';
 import { TodoContext } from './TodoContext';
 
 export function TodoProvider({ children }: { children: React.ReactNode }) {
-  const utilUtils = useTodo();
+  const todoUtils = useTodo();
 
   return (
-    <TodoContext.Provider value={utilUtils}>{children}</TodoContext.Provider>
+    <TodoContext.Provider value={todoUtils}>{children}</TodoContext.Provider>
   );
 }

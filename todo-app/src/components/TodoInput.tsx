@@ -10,12 +10,12 @@ export default function TodoInput() {
     e.preventDefault();
     const trimmedText = text.trim();
     if (!trimmedText) return
-    addTodo(trimmedText);
-    setText('');
+    addTodo(trimmedText)
+    setText('')
   }
 
   return (
-    <form onSubmit={handleSubmit} className='flex gap-2'  >
+    <form onSubmit={handleSubmit} className='flex gap-2'>
        <label htmlFor='new-todo' className='sr-only'>
           新しいタスク
        </label>
@@ -26,16 +26,14 @@ export default function TodoInput() {
          value={text} 
          onChange={(e) => setText(e.target.value)}
          placeholder='新しいタスクを入力...'
-         className='focus:outline-none focus:ring-2 focus:ring-orange-500 
-         focus-border-transparent flex-1 px-4 py-2 border border-gray-300 rounded-lg'
+         className='focus:outline-none focus:ring-2 focus:ring-orange-500 focus-border-transparent flex-1 px-4 py-2 border border-gray-300 rounded-lg'
          required
          aria-required='true'
         />
 
        <button 
          type='submit' 
-         className='hover:bg-orange-600 flex items-center gap-2 
-         px-4 py-2 text-white bg-orange-500 rounded-lg transition-colors duration-300' 
+         className='hover:bg-orange-600 flex items-center gap-2 px-4 py-2 text-white bg-orange-500 rounded-lg transition-colors duration-300' 
          aria-label='タスクを追加'
        >
 

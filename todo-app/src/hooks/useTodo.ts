@@ -18,7 +18,7 @@ export function useTodo(){
     (text : string) => {
       const now = new Date()
 
-      const newTodo: Todo ={
+      const newTodo: Todo = {
         id: crypto.randomUUID(),
         text,
         completed: false,
@@ -58,7 +58,8 @@ export function useTodo(){
            todo.id === id 
              ? {...todo, completed: !todo.completed, updateAt: new Date()}
              : todo
-        ))
+          )
+        )
       },
        [setTodos]
    ) 
@@ -74,10 +75,10 @@ export function useTodo(){
       (id: string, text: string) => {
         setTodos((prevTodos) =>
           prevTodos.map((todo) =>
-            (todo.id === id ? { ...todo, text, updatedAt: new Date() } : todo
-        )))
+            (todo.id === id ? { ...todo, text, updatedAt: new Date() } : todo))
+        )
       },
-       [setTodos]
+      [setTodos]
     )
 
    /**
@@ -96,13 +97,13 @@ export function useTodo(){
     } 
 
     result.sort((a, b) => {
-      const dateA = sort === 'createdAt' ? a.createdAt : a.updatedAt;
+      const dateA = sort === 'createdAt' ? a.createdAt : a.updatedAt
       const dateB = sort === 'createdAt' ? b.createdAt : b.updatedAt;
+      
+      return new Date(dateB).getTime() - new Date(dateA).getTime()
+    })
 
-      return new Date(dateB).getTime() - new Date(dateA).getTime();
-    });
-
-    return result;
+    return result
    } ,[todos, filter, sort])
 
    return { 
@@ -112,8 +113,8 @@ export function useTodo(){
      toggleTodo, 
      editTodo, 
      filter, 
-     sort, 
      setFilter, 
+     sort,      
      setSort, 
-   };
+   }
 }

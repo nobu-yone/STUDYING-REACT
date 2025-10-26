@@ -8,7 +8,7 @@ interface TodoItemProps {
 }
 
 export default function TodoItem({ todo }: TodoItemProps) {
-   const {toggleTodo, deleteTodo, editTodo} = useTodoContext{};
+   const {toggleTodo, deleteTodo, editTodo} = useTodoContext();
    const [isEditing, setIsEditing] = useState<boolean>(false);
    const [editedText, setEditedText] = useState<string>(todo.text)
 
@@ -32,30 +32,39 @@ export default function TodoItem({ todo }: TodoItemProps) {
     return( 
       <div className="hover:shadow-md flex items-center justify-between p-4 transition-shadow duration-300 bg-white rounded-lg shadow-sm">
         <div className='flex items-center flex-1 gap-3'>
+          {/* 完了/未完了の切り替えボタン */}
           <button
            onClick={() => toggleTodo(todo.id)}
            className="hover:text-orange-500 text-gray-500 transition-colors duration-300"
            aria-label={`${todo.text}を${todo.completed ? '未完了' : '完了'}にする`}
          >
-           {todo.completed ? (
+           {todo.completed ? 
              <CircleCheck className="w-6 h-6 text-orange-500" /> 
-            ) : (
-             <Circle className="w-6 h-6" />
-            )}
+             :<Circle className="w-6 h-6" />
+            }
          </button>
 
+         {isEditing ? (
+          // 編集モードの表示
+          <input
+            type='text'
+            value={editedText}
+            onChange={ (e) => setEditedText(e.target.value)}
+            className='focus:outline-none focus:ring-2 focus:ring-orange-500 flex-1 px-2 py-[9px] border rounded'
+            autoFocus
+          />
+        ) : (
+
          <div className="flex-1">
-            <span 
-              className={`${todo.completed ? 'line-through text-gray-400' : 'text-gray-700'}`}
-            >
+            <span className={`${todo.completed ? 'line-through text-gray-400' : 'text-gray-700'}`}>
               {todo.text}
             </span>
             <div className="mt-1 text-xs text-gray-400">
               作成: {formatDate(todo.createdAt)}
-              {todo.updatedAt > todo.createdAt &&
-              ` ・更新: ${formatDate(todo.updatedAt)}`}
+              {todo.updatedAt > todo.createdAt && ` ・更新: ${formatDate(todo.updatedAt)}`}
             </div>
          </div>
+        )}
 
          <div className='flex items-center gap-2'>
            {isEditing ? (
@@ -63,7 +72,7 @@ export default function TodoItem({ todo }: TodoItemProps) {
               <>
                 {/* 確定ボタン*/}
                 <button 
-                   onClick={() => { handleEdit }} 
+                   onClick={handleEdit}
                    className='hover:text-orange-500 text-gray-400 transition-colors duration-300'
                 >
                   <Check className='w-5 h-5' />
@@ -91,7 +100,7 @@ export default function TodoItem({ todo }: TodoItemProps) {
                 </button>
                 {/* 削除ボタン*/}
                 <button 
-                   onClick={() => deleteTodo{todo.id}}
+                   onClick={() => deleteTodo(todo.id)}
                    className='hover:text-red-500 text-gray-400 transition-colors duration-300'
                 >
                    <Trash2 className="w-5 h-5" />

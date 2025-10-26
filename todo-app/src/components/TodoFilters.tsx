@@ -3,7 +3,7 @@ import { useTodoContext } from "../hooks/useTodoContext"
 import type { TodoFilter, TodoSort } from '../types/todo'
 
 export default function TodoFilters() {
-    const { filter, setFilter, sort, setSort } = useTodoContext();
+    const { filter, setFilter, sort, setSort } = useTodoContext()
 
     const filters: { value: TodoFilter; label: string }[] = [
         { value: "all" ,  label: 'すべて' },
