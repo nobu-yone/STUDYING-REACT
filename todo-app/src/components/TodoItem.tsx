@@ -1,19 +1,26 @@
-import { Circle, CircleCheck } from 'lucide-react';
+import { useState } from 'react';
+import  { Circle, CircleCheck, Pencil, Trash2, X, Check } from 'lucide-react';
 import type { Todo } from '../types/todo';
+import { useTodoContext } from '../hooks/useTodoContext';
 
 interface TodoItemProps {
    todo: Todo
 }
 
 export default function TodoItem({ todo }: TodoItemProps) {
-   console.log(todo.id)
-   console.log(todo.text)
-   console.log(todo.completed)
-   console.log(todo.createdAt)
-   console.log(todo.updatedAt)
+   const {toggleTodo, deleteTodo, editTodo} = useTodoContext{};
+   const [isEditing, setIsEditing] = useState<boolean>(false);
+   const [editedText, setEditedText] = useState<string>(todo.text)
+
+   const handleEdit = () => {
+     if (editedText.trim() === '') return
+     if (editedText === todo.text) return
+     editTodo(todo.id, editedText)
+     setIsEditing(false)
+   }
 
    const formatDate = (date: Date) => {
-      return date.toLocaleDateString('ja-JP', {
+      return new Date(date).toLocaleDateString('ja-JP', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
@@ -22,40 +29,78 @@ export default function TodoItem({ todo }: TodoItemProps) {
       })
    }
 
-    console.log(formatDate(todo.createdAt))
-
     return( 
-      <div className="hover:shadow-sm flex items-center justify-between 
-          p-4 transition-shadow duration-300 bg-white rounded-lg shadow-sm">
-         {/* 完了未完了の切り替えボタン */ }
-         <button
-           onClick={() => {
-             console.log(`未完了完了の切り替え`);
-           }}
-           className='hover:text-orange-500 test-gray-500 transition-colors duration-300'
+      <div className="hover:shadow-md flex items-center justify-between p-4 transition-shadow duration-300 bg-white rounded-lg shadow-sm">
+        <div className='flex items-center flex-1 gap-3'>
+          <button
+           onClick={() => toggleTodo(todo.id)}
+           className="hover:text-orange-500 text-gray-500 transition-colors duration-300"
            aria-label={`${todo.text}を${todo.completed ? '未完了' : '完了'}にする`}
          >
-           {todo.completed ? 
-              <CircleCheck className='w-6 h-6 text-orange-500' /> 
-             : 
-              <Circle className="w-6 h-6" />
-            }
+           {todo.completed ? (
+             <CircleCheck className="w-6 h-6 text-orange-500" /> 
+            ) : (
+             <Circle className="w-6 h-6" />
+            )}
          </button>
 
          <div className="flex-1">
             <span 
-              className={`${todo.completed ?  'line-through text-gray-400' 
-               : 'text-gray-700'}`}
+              className={`${todo.completed ? 'line-through text-gray-400' : 'text-gray-700'}`}
             >
-               {todo.text}
+              {todo.text}
             </span>
-            <div className='mt-1 text-xs test-gray-400'>
+            <div className="mt-1 text-xs text-gray-400">
               作成: {formatDate(todo.createdAt)}
               {todo.updatedAt > todo.createdAt &&
-               `・更新: ${formatDate(todo.updatedAt)}`}
+              ` ・更新: ${formatDate(todo.updatedAt)}`}
             </div>
          </div>
+
+         <div className='flex items-center gap-2'>
+           {isEditing ? (
+            //　編集モードの操作ボタン
+              <>
+                {/* 確定ボタン*/}
+                <button 
+                   onClick={() => { handleEdit }} 
+                   className='hover:text-orange-500 text-gray-400 transition-colors duration-300'
+                >
+                  <Check className='w-5 h-5' />
+                </button>
+                {/* キャンセルボタン*/}
+                <button onClick={() => {
+                   setIsEditing(false)
+                   // 編集内容の破棄
+                   setEditedText(todo.text)
+                }} 
+                className='hover:text-red-500 text-gray-400 transition-colors duration-300'
+               >
+                  <X className='w-5 h-5' />
+               </button>
+              </>
+           ) : (
+            //　編集モードでない場合の操作ボタン
+              <>
+                {/* 編集ボタン*/}
+                <button 
+                   onClick={() => setIsEditing(true)} 
+                   className='hover:text-orange-500 text-gray-400 transition-colors duration-300'
+                >
+                  <Pencil className='w-5 h-5' />
+                </button>
+                {/* 削除ボタン*/}
+                <button 
+                   onClick={() => deleteTodo{todo.id}}
+                   className='hover:text-red-500 text-gray-400 transition-colors duration-300'
+                >
+                   <Trash2 className="w-5 h-5" />
+                </button>
+              </>
+           )}
+         </div>
+       </div>
       </div>
-    )
+    );
 }
 

@@ -11,16 +11,10 @@ export default function TodoFilters() {
         { value: "completed" , label: '完了'},
     ];
 
-    const sorts: { value: TodoSort; label: string; icon: React.ReactNode } [] = [
-       {
-           label: '作成日時', icon: <Clock className='w-4 h-4' />,
-           value: 'createdAt'
-       },
-       {
-           label: '更新日時', icon: <History className='w-4 h-4' />,
-           value: 'createdAt'
-       },
-    ];
+    const sorts: { value: TodoSort; label: string; icon: React.ReactNode }[] = [
+      { value: 'createdAt', label: '作成日時', icon: <Clock className='w-4 h-4' /> },
+      { value: 'updatedAt', label: '更新日時', icon: <History className='w-4 h-4' /> },
+    ]
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-4">
